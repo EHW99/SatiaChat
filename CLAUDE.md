@@ -77,9 +77,9 @@ GET  /api/insights/summary?range=7d - AI-generated weekly summary
 
 ---
 
-## Project Status (Updated: 2024-12-04)
+## Project Status (Updated: 2024-12-05)
 
-### ✅ Completed Features (95%)
+### ✅ Completed Features (98%)
 
 | Feature | Status | Notes |
 |---------|--------|-------|
@@ -87,9 +87,11 @@ GET  /api/insights/summary?range=7d - AI-generated weekly summary
 | Onboarding (5 steps) | ✅ Done | localStorage + Supabase user_profiles |
 | Dashboard | ✅ Done | Calories, weight, medication summary |
 | Meals CRUD | ✅ Done | Supabase meals, meal_items tables |
+| Food Search | ✅ Done | 11,086 Korean foods database |
 | Medications CRUD | ✅ Done | Medication logs tracking |
 | Weight Tracking | ✅ Done | Chart, weekly stats |
-| AI Chat Coach | ✅ Done | OpenAI gpt-4o-mini, 3 personas |
+| AI Chat Coach | ✅ Done | Supabase Edge Function, 3 personas |
+| AI Context | ✅ Done | Meals/weight/profile data included |
 | Protected Routes | ✅ Done | ProtectedRoute component |
 | QuickActions | ✅ Done | Meal/Weight forms, Medication navigation |
 | Settings Save | ✅ Done | Profile updates saved to Supabase |
@@ -101,23 +103,17 @@ GET  /api/insights/summary?range=7d - AI-generated weekly summary
 | Item | File | Issue |
 |------|------|-------|
 | **AI Summary** | `src/pages/MyPage.tsx:34-41` | `setTimeout` simulation, not real API call |
-| **OpenAI Security** | `src/hooks/useChat.ts` | API key exposed in browser (move to backend) |
 
-### 🔴 Security Issue
+### ✅ Security Issue - RESOLVED
 
-```typescript
-// src/hooks/useChat.ts - OpenAI API key exposed in browser!
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,  // ⚠️ DANGEROUS for production
-});
-```
-**Solution**: Move to Supabase Edge Function or backend API
+OpenAI API 호출이 Supabase Edge Function으로 이전됨:
+- 파일: `supabase/functions/chat/index.ts`
+- 클라이언트: `src/hooks/useChat.ts` (Edge Function 호출)
+- API 키가 더 이상 브라우저에 노출되지 않음
 
 ### Remaining Tasks (Low Priority)
 
 1. **LOW**: Connect MyPage AI summary to real Claude/OpenAI API
-2. **LOW**: Move OpenAI calls to backend (Supabase Edge Function)
 
 ### Supabase Configuration
 
@@ -133,3 +129,52 @@ const openai = new OpenAI({
 - **Type Definitions**: `src/types/domain.ts`
 - **Validation Schemas**: `src/lib/validations/onboarding.ts`
 - **Hooks**: `src/hooks/` (useMeals, useProfile, useProgress, useMedications, useChat)
+- **Edge Functions**: `supabase/functions/chat/` (AI 챗봇)
+
+---
+
+## Supabase Edge Function 배포 가이드
+
+### 1. Supabase CLI 설치
+
+```bash
+npm install -g supabase
+```
+
+### 2. 프로젝트 연결
+
+```bash
+cd mini_project_test/ai-coach-companion
+supabase login
+supabase link --project-ref REDACTED_SUPABASE_PROJECT_ID
+```
+
+### 3. 환경 변수 설정 (Supabase Dashboard)
+
+Supabase Dashboard > Project Settings > Edge Functions > Secrets:
+
+```
+OPENAI_API_KEY=sk-your-openai-api-key
+```
+
+### 4. Edge Function 배포
+
+```bash
+supabase functions deploy chat
+```
+
+### 5. 테스트
+
+```bash
+curl -X POST 'https://REDACTED_SUPABASE_PROJECT_ID.supabase.co/functions/v1/chat' \
+  -H 'Authorization: Bearer YOUR_ANON_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"content": "안녕", "persona": "bright", "userId": "test-user-id"}'
+```
+
+### AI 챗봇 컨텍스트
+
+챗봇은 다음 사용자 데이터를 자동으로 포함합니다:
+- **프로필**: 현재 체중, 목표 체중, 일일 목표 칼로리
+- **오늘의 식사**: 각 끼니별 음식, 칼로리, 영양소 합계
+- **체중 기록**: 최근 7일간 체중 변화
