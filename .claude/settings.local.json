@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp add context7 -- npx -y @upstash/context7-mcp)",
+      "Bash(claude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=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 -- npx -y @modelcontextprotocol/server-github)",
+      "Bash(claude mcp list:*)",
+      "mcp__github__get_file_contents",
+      "Bash(claude /plugin marketplace add:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git restore:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
