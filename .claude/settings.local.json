@@ -19,7 +19,10 @@
       "Bash(cat:*)",
       "Bash(taskkill:*)",
       "Bash(git commit:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(git push:*)",
+      "Bash(git -C \"C:\\workspace\\mini_project\" diff HEAD -- src/pages/Medications.tsx src/pages/Settings.tsx)",
+      "Bash(git -C \"C:\\workspace\\mini_project\" log --oneline -15)"
     ],
     "deny": [],
     "ask": []
