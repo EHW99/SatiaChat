@@ -22,7 +22,20 @@
       "Bash(npx tsc:*)",
       "Bash(git push:*)",
       "Bash(git -C \"C:\\workspace\\mini_project\" diff HEAD -- src/pages/Medications.tsx src/pages/Settings.tsx)",
-      "Bash(git -C \"C:\\workspace\\mini_project\" log --oneline -15)"
+      "Bash(git -C \"C:\\workspace\\mini_project\" log --oneline -15)",
+      "WebSearch",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:benjamincrozat.com)",
+      "WebFetch(domain:openai.com)",
+      "Bash(ren rag-api \"rag-api_미사용_backup\")",
+      "Bash(python fetch_documents.py:*)",
+      "Bash(python build_index.py:*)",
+      "Bash(tree:*)",
+      "Bash(dir:*)",
+      "Bash(python:*)",
+      "Bash(netstat:*)",
+      "Bash(powershell -c \"(Get-Content ''C:\\workspace\\mini_project\\src\\pages\\Board.tsx'' | Measure-Object -Line).Lines\")",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
