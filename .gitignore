@@ -42,3 +42,6 @@ server/logs/
 
 # Python cache (medication-rag)
 medication-rag/__pycache__/
+
+# Claude Code 내부 가이드
+CLAUDE.md
